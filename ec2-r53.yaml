@@ -22,4 +22,4 @@
        Component: "{{ item }}"
        Project: "roboshop"
        Environment: "{{ env }}"
-    looop: "{{ instances }}"
+    loop: "{{ instances }}"
