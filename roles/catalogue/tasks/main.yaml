@@ -1,0 +1,62 @@
+- name: Enable NodeJS 20
+  ansible.builtin.command: dnf module enable nodejs:20 -y
+
+- name: Install NodeJS
+  ansible.builtin.dnf:
+   name: nodejs
+   state: present
+
+- name: Create System User
+  ansible.builtin.user:
+    name: roboshop
+    home: /app
+    shell: /sbin/nologin
+    system: true
+    comment: roboshop system user
+
+- name: Create a app directory
+  ansible.builtin.file:
+    path: /app
+    state: directory
+
+- name: Download Catalogue Code
+  ansible.builtin.get_url:
+    url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
+    dest: /tmp/catalogue.zip
+
+- name: Unarchive Catalogue
+  ansible.builtin.unarchive:
+    src: /tmp/catalogue.zip
+    dest: /app
+
+- name: Install dependencies
+  community.general.npm:
+    path: /app
+    state: present
+
+- name: Copy Catalogue Service 
+  ansible.builtin.template:
+    src: catalogue.service.j2
+    dest: /etc/systemd/system/catalogue.service
+
+- name: Reload Daemon
+  ansible.builtin.systemd_service:
+   daemon_reload: true
+
+- name: Enable and start Catalogue
+  ansible.builtin.service:
+   name: catalogue
+   state: restarted
+   enabled: true
+
+- name: Copy Mongo Repo
+  ansible.builtin.copy:
+   src: mongo.repo
+   dest: /etc/yum.repos.d/mongo.repo
+
+- name: Install MondoDB
+  ansible.builtin.dnf:
+   name: mongodb-mongosh
+   state: present
+
+- name: 
