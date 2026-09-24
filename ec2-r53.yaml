@@ -51,4 +51,4 @@
     loop: "{{ ec2_output.results }}"
     when: 
     - action == "create"
-    - instances == "frontend"
+    - item.item == "frontend"
