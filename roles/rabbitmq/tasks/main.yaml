@@ -19,9 +19,19 @@
     user: roboshop
     password: roboshop123
     tags: administrator
-    permissions:
     vhost: /
     configure_priv: ".*"
     write_priv: ".*"
     read_priv: ".*"
     state: present
+
+# - name: create rabbitmq user
+#   community.rabbitmq.rabbitmq_user:
+#     user: roboshop 
+#     password: roboshop123
+#     permissions:
+#       - vhost: /
+#         configure_priv: .*
+#         read_priv: .*
+#         write_priv: .*
+#     state: present
