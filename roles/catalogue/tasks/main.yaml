@@ -1,12 +1,17 @@
 - name: App Setup
-  ansible.builtin.import:
-   name: app_setup
+  ansible.builtin.import_role:
+   name: common
    tasks_from: app_setup.yaml
 
 - name: Nodejs Setup
-  ansible.builtin.import:
-   name: nodejs_setup
+  ansible.builtin.import_role:
+   name: common
    tasks_from: nodejs_setup.yaml
+
+- name: Systemd Setup
+  ansible.builtin.import_role:
+   name: common
+   tasks_from: systemd_setup.yaml
 
 - name: Copy Mongo Repo
   ansible.builtin.copy:
