@@ -53,3 +53,35 @@
     when: 
     - action == "create"
     - item.item == "frontend"
+
+  - name: Delete R53 for private IP
+    amazon.aws.route53:
+      state: absent
+      zone: "{{ domain }}"
+      record: "{{ item.item }}-{{ env }}.{{ domain }}" #mongodb-dev.rakesh.bond
+      type: A
+      ttl: 1
+    loop: "{{ ec2_output.results }}"
+    when: action == "destroy"
+  
+  - name: Delete R53 for public IP
+    amazon.aws.route53:
+      state: absent
+      zone: "{{ domain }}"
+      record: "frontend-{{ env }}.{{ domain }}" #mongodb-dev.rakesh.bond
+      type: A
+      ttl: 1
+    loop: "{{ ec2_output.results }}"
+    when: 
+    - action == "destroy"
+    - item.item == "frontend"
+  
+  - name: Delete EC2 instance
+    amazon.aws.ec2_instance:
+     name: "{{ item }}-{{ env }}"
+     state: absent
+     wait: false
+    loop: "{{ instances }}"
+    when: action == "destroy"
+
+  
