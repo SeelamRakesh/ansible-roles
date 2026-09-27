@@ -11,13 +11,8 @@
 - name: Start rabbitmq
   ansible.builtin.service:
    name: rabbitmq-server
-   state: started
+   state: restarted
    enabled: yes
-
-- name: Remove RabbitMQ user
-  community.rabbitmq.rabbitmq_user:
-    user: "roboshop"
-    state: absent
 
 - name: create rabbitmq user
   community.rabbitmq.rabbitmq_user:
