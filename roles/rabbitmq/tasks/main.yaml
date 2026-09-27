@@ -14,24 +14,18 @@
    state: started
    enabled: yes
 
-- name: Add RabbitMQ user
+- name: Remove RabbitMQ user
   community.rabbitmq.rabbitmq_user:
-    user: roboshop
-    password: roboshop123
-    tags: administrator
-    vhost: /
-    configure_priv: ".*"
-    write_priv: ".*"
-    read_priv: ".*"
-    state: present
+    user: "roboshop"
+    state: absent
 
-# - name: create rabbitmq user
-#   community.rabbitmq.rabbitmq_user:
-#     user: roboshop 
-#     password: roboshop123
-#     permissions:
-#       - vhost: /
-#         configure_priv: .*
-#         read_priv: .*
-#         write_priv: .*
-#     state: present
+- name: create rabbitmq user
+  community.rabbitmq.rabbitmq_user:
+    user: roboshop 
+    password: roboshop123
+    permissions:
+      - vhost: /
+        configure_priv: .*
+        read_priv: .*
+        write_priv: .*
+    state: present
