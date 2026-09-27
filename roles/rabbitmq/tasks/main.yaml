@@ -12,7 +12,7 @@
   ansible.builtin.service:
    name: rabbitmq-server
    state: started
-   enabled: true
+   enabled: yes
 
 - name: Add RabbitMQ user
   community.rabbitmq.rabbitmq_user:
